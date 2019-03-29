@@ -1,0 +1,12 @@
+//Instalacion bootstrap
+npm install bootstrap jquery popper.js --save
+
+//Instalacion bootstrap modal
+npm install ng2-bootstrap-modal
+
+//Crear componente
+ng generate component modals/request
+
+//instalar ng2-rut
+npm install ng2-rut --save
+

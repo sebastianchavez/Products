@@ -1,0 +1,61 @@
+
+<div class="row mt-4">
+    <div class="col-md-4 offset-md-4">
+        <button class="btn btn-success btn-block" (click)="open(content)">Agregar Usuario</button>
+    </div>
+    <table class="table table-hover mt-4" *ngIf="user">
+        <thead>
+          <tr>
+            <th>rut</th>
+            <th>nombre</th>
+            <th>rol</th>
+            <th>activa</th>
+            <th>editar</th>
+            <th>eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usr of users">
+            <td>{{usr.rut}}</td>
+            <td>{{usr.name}}</td>
+            <td>{{usr.role}}</td>
+            <td>{{usr.activate}}</td>
+            <td><button class="btn btn-warning" (click)="modifyUser(content, usr)">Editar</button></td>
+            <td><button *ngIf="usr.rut != usuario.rut" class="btn btn-danger">Eliminar</button></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Agregar Usuario</h4>
+          <button type="button" class="close" aria-label="Close" id="btnClose" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Rut</label>
+            <input type="text" id="txtRut" class="form-control" (blur)="ValidaRut()" [(ngModel)]="user.roluni" formatRut required autofocus>
+            <label>Correo</label>
+            <input type="email" class="form-control" [(ngModel)]="user.email" (blur)="ValidaEmail()">
+            <label>Confirmar correo</label>
+            <input type="email" class="form-control" [(ngModel)]="user.email2" (blur)="ConfirmaEmail()">
+            <label>Nombre</label>
+            <input type="text" class="form-control" [(ngModel)]="user.name">
+            <label>Contraseña</label>
+            <input type="password" class="form-control" [(ngModel)]="user.password">
+            <label>Confirmar contraseña</label>
+            <input type="password" class="form-control" [(ngModel)]="user.password2" (blur)="ConfirmarPassword()">
+            <label>Perfil</label>
+            <select class="form-control" [(ngModel)]="user.role">
+                <option *ngFor="let rol of roles">{{rol}}</option>
+              </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="saveUser()">Guardar</button>
+        </div>
+      </ng-template>

@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-md-12 mt-4">
+        <div class="alert alert-success" align="center">
+          <strong>Pagos</strong>
+        </div>
+    </div>
+    <div class="col-md-4 mt-4">
+      <div class="form-group">
+        <label for="sel1">Año</label>
+        <select class="form-control" [(ngModel)]="year" (change)="loadTable()">
+          <option *ngFor="let a of anos">{{a}}</option>
+        </select>
+      </div>      
+    </div>
+
+    <div class="col-md-4 mt-4">
+      <div class="form-group">
+        <label for="sel1">Mes</label>
+        <select class="form-control" [(ngModel)]="month" (change)="loadTable()">
+          <option *ngFor="let m of mes">{{m}}</option>
+        </select>
+      </div>      
+    </div>
+    <div class="col-md-4 mt-4">
+    </div>
+    <div class="col-md-12 mt-4">
+        <div class="form-group">
+            <input type="text" placeholder="Buscar pago" class="form-control" [(ngModel)]="query">
+        </div>
+      </div>
+  <div class="col-md-12">
+    <div class="table-responsive mt-4" *ngIf="expenses">
+        <table class="table-sm table-hover" width="100%" cellspacing="0">
+            <thead class="table table-bordered">
+              <tr class="table-success">
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Estado</th>
+                <th>Valor</th>
+                <th>Fecha pago</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody class="table table-bordered">
+              <tr *ngFor="let exp of expenses | search: query" [ngClass]="{'table-info' : exp.state == 'Pagado'}">
+                <td>{{exp.codPay}}</td>
+                <td>{{exp.name}}</td>
+                <td>{{exp.category}}</td>
+                <td>{{exp.state}}</td>
+                <td style="width: 100px">
+                  <input type="text" class="text-right form-control form-control-sm" [(ngModel)]="exp.price">
+                </td>
+                <td>{{exp.datePay | date:'dd-MM-yyyy'}}</td>
+                <td>
+                  <button *ngIf="exp.state != 'Pagado'" class="btn btn-success btn-sm" (click)="pagar(exp)">Pagar</button>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>

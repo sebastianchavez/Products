@@ -1,0 +1,74 @@
+<div class="row mt-4">
+  <div class="col-md-12">
+      <div class="alert alert-success" align="center">
+        <strong>Gastos</strong>
+      </div>
+  </div>
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+      <button class="btn btn-info btn-block" (click)="open(content)">Agregar gasto</button>
+  </div>
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-12 mt-4">
+    <div class="form-group">
+        <input type="text" placeholder="Buscar gastos" class="form-control" [(ngModel)]="query">
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive mt-4" *ngIf="expenses">
+  <table class="table-sm table-hover" width="100%" cellspacing="0">
+      <thead class="table table-bordered">
+          <tr class="table-success">
+              <th>Codigo</th>
+              <th>Nombre</th>
+              <th>Valor</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+          </tr>
+      </thead>
+      <tbody class="table table-bordered">
+        <tr *ngFor="let exp of expenses | search: query">
+          <td>{{exp.cod}}</td>
+          <td>{{exp.name}}</td>
+          <td>{{exp.price}}</td>
+          <td><button class="btn btn-warning btn-sm" (click)="modifyExpense(content,exp)">Editar</button></td>
+          <td><button class="btn btn-danger btn-sm" (click)="deleteExp(exp._id)">Eliminar</button></td>
+        </tr>
+      </tbody>
+      <tfoot>
+      </tfoot>
+  </table>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Gasto</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+            <div class="form-group">
+                <label>Codigo</label>
+                <input type="number" class="form-control" [(ngModel)]="expense.cod">
+                <label>Nombre</label>
+                <input type="text" class="form-control" [(ngModel)]="expense.name">
+                <label>Categoria</label>
+                <input type="text" class="form-control" [(ngModel)]="expense.category">
+                <label>Precio</label>
+                <input type="number" min="0" class="form-control" [(ngModel)]="expense.price">
+                <label>Descipcion</label>
+                <textarea class="form-control" rows="3" [(ngModel)]="expense.description"></textarea>
+            </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="save()">Guardar</button>
+  </div>
+</ng-template>

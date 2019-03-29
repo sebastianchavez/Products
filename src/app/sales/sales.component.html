@@ -1,0 +1,88 @@
+<div class="row">
+    
+    <div class="col-md-6 " >
+        <div class="input-group mb-3 mt-4">
+            <kendo-autocomplete [data]="listItems" [placeholder]="'Producto'" class="form-control" (keyup.enter)="addProduct()" [(ngModel)]="prod"></kendo-autocomplete>
+            <div class="input-group-append">
+                <button class="btn btn-info" type="submit" (click)="addProduct()">
+                    <!-- <img src="assets/icons/add_black.svg" width="20" height="20"  > -->
+                    Agregar
+                </button> 
+                </div>
+        </div>
+        <div class="table-sm table-hover" *ngIf="products.length > 0" >
+                <table id="tablaHtml" class="table table-bordered" tabla="tableProducts" width="100%" cellspacing="0">
+                    <thead>
+                        <tr class="table-success">
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Valor</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let prod of products">
+                        <td>{{prod.cod}}</td>
+                        <td>{{prod.name}}</td>
+                        <td>$ {{prod.price  | thousands}}</td>
+                        <td><button class="btn btn-danger btn-sm" (click)="deleteProd(prod.date)">Eliminar</button></td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-info">
+                                <th></th>
+                                <th></th>
+                                <th>Total</th>
+                                <th>$ {{total | thousands}}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+              </div>
+    </div>    
+    <div class="col-md-6" >
+            <div class="input-group mb-3 mt-4">
+                <kendo-autocomplete [data]="clientList" [placeholder]="'Rut de cliente'" class="form-control" (blur)="ValidateRut()" (keyup.enter)="addClient()" [(ngModel)]="client.roluni" ></kendo-autocomplete>
+                <div class="input-group-append">
+                    <button class="btn btn-info" type="submit" (click)="addClient()">
+                        agregar
+                    </button> 
+                </div>
+            </div>
+            <hr>
+            <div *ngIf="client.name || newClient" class="card text-white bg-secondary mb-3">
+                    <div class="card-body">
+                            <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Nombre" [(ngModel)]="client.name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Teléfono Ej: 56912345678" [(ngModel)]="client.contact">
+                                </div>
+                                <div class="form-group">        
+                                    <input type="text" class="form-control form-control-sm" placeholder="Dirección" [(ngModel)]="client.direction">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Comuna" [(ngModel)]="client.commune">        
+                                </div>
+                                <div class="form-group">        
+                                    <input type="text" class="form-control form-control-sm" placeholder="Region" [(ngModel)]="client.region">
+                                </div>
+                    </div>
+            </div>
+        </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-6 mt-4">    
+  </div>
+  <div class="col-md-6">
+    
+  </div>
+  <div *ngIf="products.length > 0" class="col-md-12 mt-4" >
+      
+  </div>  
+      <div class="col-md-6" *ngIf="products.length > 0">
+          <button class="btn btn-success" (click)="save()">Generar venta</button>
+          <button class="btn btn-danger ml-4" (click)="cancel()">Cancelar</button>
+        </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="container-fluid register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            
+            <h3>Registro empresa</h3>
+            <p>Bienvenido a nuestro sistema de productos, para poder ingresar debe registrarse con datos reales.</p>
+            <p>Debe llenar todos los campos requeridos, en caso que ya posea una cuenta solo debe ingresar</p>
+            <input type="button" value="Ingresar" routerLink="/"/><br/>
+        </div>
+        <div class="col-md-9 register-right">
+            
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h3 class="register-heading">Registro</h3>
+                    <div class="row register-form">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Rut" [(ngModel)]="emp.roluni" (blur)="ValidaEmpRut()" formatRut required/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Razon Social" [(ngModel)]="emp.name"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Giro de la empresa" [(ngModel)]="emp.business"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Contacto" [(ngModel)]="emp.contact"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Direccion" [(ngModel)]="emp.direction"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control"  placeholder="Correo" [(ngModel)]="emp.email" (blur)="ValidaEmail()" />
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control"  placeholder="Confirmar Correo" [(ngModel)]="emp.email2" (blur)="ConfirmaEmail()"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Contraseña" [(ngModel)]="emp.password" />
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control"  placeholder="Confirmar Contraseña" [(ngModel)]="emp.password2" (blur)="ConfirmarPassword()"/>
+                            </div>
+                                <input type="button" class="btnRegister"  value="Registrar" (click)="register()"/>
+                            </div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+
+</div>

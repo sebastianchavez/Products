@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-md-4">
+    <h1>Desde</h1>
+    <form class="form-inline">
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                   name="dp" [(ngModel)]="date1"  ngbDatepicker #d1="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
+                <img src="assets/icons/calendar.svg" width="20" height="20">
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+  <div class="col-md-4">
+      <h1>Hasta</h1>
+      <form class="form-inline">
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd"
+                     name="dp" [(ngModel)]="date2" ngbDatepicker #d2="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+                    <img src="assets/icons/calendar.svg" width="20" height="20">
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+  </div>
+  <div class="col-md-4" >
+    <h1>Informe</h1>
+    <div class="input-group mb-3">
+        <select class="form-control" [(ngModel)]="report" (change)="loadTable()">
+            <option *ngFor="let rep of reports">{{rep}}</option>
+          </select>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="loadTable()">
+              <img src="assets/icons/search.svg" width="20" height="20">
+          </button>
+        </div>
+      </div>
+  </div>
+  <div class="col-md-12 mt-4">
+      <div class="table-responsive" *ngIf="detailTable.length > 0 && report == 'Ventas'">
+        <!-- tabla Ventas -->
+          <table id="tablaHtml" class="table table-bordered" tabla="tableProducts" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Medio de pago</th>
+                    <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let det of detailTable">
+                  <td>{{det.cod}}</td>
+                  <td>{{det.date | date }}</td>
+                  <td>{{det.client}}</td>
+                  <td>{{det.state}}</td>
+                  <td>{{det.type}}</td>
+                  <td>$ {{det.total | thousands}}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+              </tfoot>
+          </table>
+        </div>
+            <!-- tabla  Gastos-->
+            <div class="table-responsive" *ngIf="detailTable.length > 0 && report == 'Gastos'">
+              <table id="tablaHtml" class="table table-bordered" tabla="tableProducts" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Fecha Pago</th>
+                        <th>Nombre</th>
+                        <th>Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let det of detailTable">
+                      <td>{{det.codPay}}</td>
+                      <td>{{det.datePay | date}}</td>
+                      <td>{{det.name}}</td>
+                      <td>{{det.price}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                  </tfoot>
+              </table>
+            </div>
+
+                <!-- tabla  stock-->
+                <div class="table-responsive" *ngIf="detailTable.length > 0 && report == 'Stock'">
+                  <table id="tablaHtml" class="table table-bordered" tabla="tableProducts" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                            <th>Codigo Producto</th>
+                            <th>Fecha</th>
+                            <th>Operacion</th>
+                            <th>Cantidad</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let det of detailTable">
+                          <td>{{det.codProd}}</td>
+                          <td>{{det.date | date}}</td>
+                          <td>{{det.operation}}</td>
+                          <td>{{det.quantity}}</td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                      </tfoot>
+                  </table>
+                </div>
+  </div>
+  
+  
+  <div class="col-md-4 offset-md-4" *ngIf="detailTable.length > 0">
+    <button class="btn btn-info btn-block" (click)="generateReport()">Generar Informe de detalle</button>
+  </div>
+      
+</div>

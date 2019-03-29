@@ -1,0 +1,161 @@
+import { Component, OnInit } from '@angular/core';
+import { ExpenseService } from '../services/expense.service';
+import { UserService } from '../services/user.service';
+import { UtilityService } from '../services/utility.service';
+import { PayService } from '../services/pay.service';
+
+@Component({
+  selector: 'app-pay',
+  templateUrl: './pay.component.html',
+  styleUrls: ['./pay.component.css']
+})
+export class PayComponent implements OnInit {
+  query: string = ''
+  user:any
+  pay:any
+  pays:any
+  expenses:any
+  api:String = 'http://localhost:3001/'
+  constructor(private expenseService: ExpenseService, private userService: UserService, private payService:PayService) {
+    userService.getUserById(`${this.api}api/users/${localStorage.getItem('session')}`)
+      .subscribe(resp => {
+        this.user = resp
+        this.loadTable()
+      },err =>{
+        console.log(`Error: ${err.error.message}`)
+      })
+  }
+
+  ngOnInit() {
+  }
+
+  loadTable(){
+    this.expenseService.getByRut(`${this.api}api/expenses/${this.user.rutEmp}`)
+          .subscribe((resp:any) => {
+            this.expenses = resp
+            this.payService.get(`${this.api}api/pays/${this.user.rutEmp}`)
+              .subscribe((resp:any) => {
+                this.pays = resp
+                  let arr = []
+                      if (!this.pays){
+                        resp.map(val => {
+                          let obj:any = {
+                            rutEmp: this.user.rutEmp,
+                            codPay: val.cod,
+                            idPay: val._id,
+                            name: val.name,
+                            price: val.price,
+                            category: val.category,
+                            state: 'pendiente',
+                            date: ''
+                          }
+                          arr.push(obj)
+                        })
+                      } 
+                      else {
+                        let flag = false
+                        let date = new Date(Date.now())
+                        let month = (date.getMonth() + 1).toString()
+                        if(month.length == 1){month = 0 + '' + month}
+                        let year = date.getFullYear()
+                        let per = year + '' + month
+                        // console.log(this.expenses)
+                        this.expenses.map(val =>{
+                          let flag = false
+                          this.pays.map(val2 => {
+                            console.log(val2.idPay)
+                            console.log(val._id)
+                            if(val2.idPay == val._id){
+                              flag = true
+                            }
+                          })
+                          if(flag){
+                            this.pays.sort((a, b) => {
+                              return (a.date - b.date)
+                            })
+                            let reg
+                            this.pays.map(val2 => {
+                              reg = null
+                              reg = val2
+                            })
+                            let dateReg = new Date(reg.date)
+                            let monthReg = (dateReg.getMonth()+1).toString()
+                            if (monthReg.length == 1) {monthReg = 0 +''+ monthReg}
+                            let yearReg = dateReg.getFullYear()
+                            let perReg = yearReg + '' + monthReg
+                            console.log(perReg)
+                            console.log(per)
+                            if (per == perReg){
+                              console.log(reg)
+                              reg.category =  val.category
+                              reg.state = 'Pagado'
+                              arr.push(reg)
+                            } else {
+                              let mes
+                              let i = 0
+                              mes = parseFloat(monthReg)
+                              while(parseFloat(per) > parseFloat(perReg) + 1){
+                                mes = parseFloat(mes)
+                                if(mes == 12){
+                                  mes = 1
+                                  yearReg++
+                                } else {
+                                  mes+= 1
+                                }
+                                if(mes.toString().length == 1) {mes = 0 + '' + mes}
+                                let obj:any = {
+                                  rutEmp: this.user.rutEmp,
+                                  codPay: val.cod,
+                                  idPay: val._id,
+                                  name: val.name,
+                                  price: val.price,
+                                  category: val.category,
+                                  state: 'pendiente',
+                                  date: `${yearReg}-${mes}-01`
+                                }
+                                arr.push(obj)
+                                i++
+                                perReg = yearReg + '' + mes
+                                console.log(val)
+                                console.log(perReg)
+                              }
+                            }
+                          } else {
+                            let obj:any = {
+                              rutEmp: this.user.rutEmp,
+                              codPay: val.cod,
+                              idPay: val._id,
+                              name: val.name,
+                              price: val.price,
+                              category: val.category,
+                              state: 'pendiente',
+                              date: ''
+                            }
+                            arr.push(obj)
+                          }
+                        })
+                      }
+                  this.expenses = arr
+              },err => {
+                console.log(`Error: ${err.error.message}`)
+              })
+          },err => {
+            console.log(`Error: ${err.error.message}`)
+          })
+  }
+
+  pagar(exp){
+    exp.date = Date.now()
+    this.payService.save(`${this.api}api/pay`,exp)
+      .subscribe(resp => {
+        alert('Gasto pagado con éxito')
+        this.loadTable()
+      },err => {
+        alert('Error al pagar')
+        console.log(`Error: ${err.error.message}`)
+      })
+  }
+
+
+
+}
