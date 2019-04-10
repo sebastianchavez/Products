@@ -30,20 +30,24 @@ export class RegisterComponent {
   if(resultEmail == false) {
     alert('Email inválido')
     this.emp.email = ''
-    this.emp.email2 = ''
+  }
+  if(this.emp.email2 || this.emp.email2.length > 0){
+    if(this.emp.email != this.emp.email2){
+      alert('Emails no coinciden')
+      this.emp.email = ''
+      this.emp.email2 = ''
+    }
   }
  }
  ConfirmarPassword(){
    if(this.emp.password != this.emp.password2){
      alert('Contraseña no coincida')
-     this.emp.password = ''
      this.emp.password2 = ''
    }
  }
  ConfirmaEmail(){
    if(this.emp.email != this.emp.email2){
     alert('Email no coincide')
-    this.emp.email = ''
     this.emp.email2 = ''
    }
  }
@@ -72,39 +76,26 @@ export class RegisterComponent {
         this.user.active = true
         this.api.post('api/signup',this.user,false)
           .subscribe((resp:any)=>{
+            debugger
             console.log(resp)
-            if(resp.cod == 0) {
-              this.api.delete('api/delete/'+this.emp.rut,false)
-                .subscribe(resp =>{
-                  alert('Problemas al guardar empresa')
-                },err =>{
-                  alert('Problemas al guardar empresa')
-                })
-            } else {
-              let sale = {
-                rutEmp: this.emp.rut,
-                cod:0
-              }
-              this.api.post(`sale`,sale,false)
-                .subscribe(resp => {
-                  alert('Empresa guardada con éxito')
-                },err =>{
-                  alert('Problemas al guardar empresa')
-                })
-            }
+            alert('Empresa guardada con éxito')
+            this.router.navigate(['/'])
+            this.user = {}
+            this.emp = {}
           },err =>{
-            this.api.delete('api/delete/'+this.emp.rut,false).pipe()
-                .subscribe(resp =>{
-                  alert('Problemas al guardar empresa')
-                },err =>{
-                  alert('Problemas al guardar empresa')
-                })
+            console.log(err)
+            let logError = {component:'register', function:'register', description: 'line 70, post api/signup, error: ' + err.error.message ,user: 'N/A', date: Date.now()}
+            this.api.post('api/log/error',logError, false)
+            alert('Problemas al guardar empresa')
           })
-          this.router.navigate(['/'])  
-        this.user = {}
-        this.emp = {}
       } 
      },err => {
+      let logError = {component:'register', function:'register', description: 'line 54, post api/company/register, error: ' + err.error.message ,user: 'N/A', date: Date.now()}
+      this.api.post('api/log/error',logError, false).subscribe(resp => {
+        console.log(resp)
+      },err =>{
+        console.log(err)
+      })
        alert(err.error.message)
      })
  } else {

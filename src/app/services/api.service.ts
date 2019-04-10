@@ -6,7 +6,7 @@ export class ApiService {
         httpOptions = {
                 headers: new HttpHeaders({ 'Content-Type': 'application/json', authorization: localStorage.getItem('token') })
         }
-        api: String = 'http://192.168.0.2:3001/'
+        api: String = 'http://localhost:3001/'
         constructor(public http: HttpClient) { }
 
         get(url,options:boolean) {

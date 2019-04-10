@@ -1,11 +1,11 @@
 import {Injectable} from "@angular/core";
 import {CanActivate} from "@angular/router";
-import { UserService } from "./user.service";
+import { ApiService } from "./api.service";
 @Injectable()
 export class MyGuard implements CanActivate{
     loggedIn = false;
-    constructor(private userService:UserService){
-        userService.isLogged().pipe()
+    constructor(private api:ApiService){
+        this.api.isLogged().pipe()
             .subscribe((result:any)=>{
                 // console.log(result)
                 if(result.cod != 0){

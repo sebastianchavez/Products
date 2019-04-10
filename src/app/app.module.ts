@@ -30,6 +30,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { PayComponent } from './pay/pay.component';
 import { TestComponent } from './test/test.component';
 import { ApiService } from './services/api.service';
+import { IndexComponent } from './index/index.component';
 
 
 
@@ -38,13 +39,13 @@ const appRoutes : Routes = [
   {path:'register', component: RegisterComponent},
   {path:'login',component:LoginComponent},
   {path:'profile',component: ProfileComponent},
-  {path:'',component: ProfileComponent},
+  {path:'',component: IndexComponent},
   {path:'expenses', component: ExpensesComponent},
-  {path:'products', component:ProductComponent, canActivate:[MyGuard]},
-  {path:'sales', component:SalesComponent, canActivate:[MyGuard]},
-  {path:'client', component:ClientComponent, canActivate:[MyGuard]},
-  {path:'reports', component:ReportsComponent, canActivate:[MyGuard]},
-  {path:'pay', component:PayComponent, canActivate:[MyGuard]}
+  {path:'products', component:ProductComponent},
+  {path:'sales', component:SalesComponent},
+  {path:'client', component:ClientComponent},
+  {path:'reports', component:ReportsComponent},
+  {path:'pay', component:PayComponent}
 ]
 
 @NgModule({
@@ -62,7 +63,8 @@ const appRoutes : Routes = [
     ClientComponent,
     ReportsComponent,
     PayComponent,
-    TestComponent
+    TestComponent,
+    IndexComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +82,7 @@ const appRoutes : Routes = [
     MatButtonModule,
     MatCheckboxModule,
     SweetAlert2Module,
-    DataTablesModule
+    DataTablesModule,
   ],
   providers: [ApiService, UtilityService, MyGuard],
   bootstrap: [AppComponent],

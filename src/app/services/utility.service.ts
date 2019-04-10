@@ -33,6 +33,9 @@ export class UtilityService{
                     suma += value
                 })
                 resultDv = 11 - (suma - Math.trunc(suma / 11) * 11)
+                if(resultDv > 9 && Dv == "0"){
+                    return true
+                }
                 if(resultDv == Dv){
                     return true
                 } else{
